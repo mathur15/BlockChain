@@ -40,6 +40,7 @@ class Blockchain:
 			#define the problem miners have to solve using the SHA256 with 4 leading 0's
 			#generate hash every iteration
 			hash_operation=hashlib.sha256(str(new_proof**2 - previous_proof**2).encode()).hexdigest() #non symmetrical
+			#this is just a criteria of sorts of generate a proof of work
 			#add a b before the start of the hash
 			#check if the first four characters are 0's
 			if hash_operation[0:4] == '0000':#miner wins
@@ -69,6 +70,7 @@ class Blockchain:
 			previous_proof= previous_block['proof'] 
 			proof=block['proof']
 			hash_operation=hashlib.sha256(str(proof**2 - previous_proof**2).encode()).hexdigest() #non symmetrical
+			#this was how the proof of works were made
 			if hash_operation[:4] !='0000':
 				return False
 			previous_block=block
