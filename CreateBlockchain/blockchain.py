@@ -54,7 +54,7 @@ class Blockchain:
 	def hash(self,block):
 		encoded_block=json.dumps(block,sort_keys=True).encode() #format for the SHA256
 		#convert the json to string
-		return hashlib.sha256(encdoded_block).hexdigest()
+		return hashlib.sha256(encoded_block).hexdigest()
 
     #verify if everything is right in the blockchain
 	  #-check if each block has right proof of work
@@ -81,7 +81,7 @@ class Blockchain:
 app=Flask(__name__)
 
 #Mining the blockchain
-blockchain=new Blockchain()
+blockchain=Blockchain()
 
 @app.route('/mine_block',methods=['GET'])
 def mine_block():
@@ -108,6 +108,18 @@ def get_chain():
 			  'length':len(blockchain.chain)}
 
 	return jsonify(response),200
+
+#check if blockchain is valid
+
+@app.route('/is_valid_blockchain',methods=['GET'])
+def is_valid_blockchain():
+	is_valid=blockchain.is_chain_valid(blockchain.chain)
+	if is_valid:
+		response={'message':'All Good.'}
+	else:
+		response={'message': 'We have a problem'}
+	return jsonify(response),200
+
 
 #running the app
 app.run(host='0.0.0.0',port=5000)
